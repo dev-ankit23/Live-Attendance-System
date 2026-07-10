@@ -150,9 +150,12 @@ app.post("/login", async (req, res) => {
   }
 });
 
-app.get("/me", authenticateToken, (req, res) => {
-  res.json({
-    message: "This is me route",
+app.get("/me", authenticateToken, async (req, res) => {
+  const user = await User.findById(req.user.id).select("email");
+
+  return res.status(200).json({
+    success: true,
+    user,
   });
 });
 app.listen(PORT, () => {
