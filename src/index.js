@@ -5,6 +5,7 @@ import User from "./models/userModel.js";
 import * as z from "zod";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import authenticateToken from "./middleware/authMiddleware.js";
 
 dotenv.config();
 
@@ -149,8 +150,11 @@ app.post("/login", async (req, res) => {
   }
 });
 
+app.get("/me", authenticateToken, (req, res) => {
+  res.json({
+    message: "This is me route",
+  });
+});
 app.listen(PORT, () => {
-  console.log(
-    `Server is running on port and git bash is working fine if its show in github ${PORT}`,
-  );
+  console.log(`Server is running on port${PORT}`);
 });
